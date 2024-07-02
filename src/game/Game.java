@@ -28,28 +28,28 @@ public class Game {
 	}
 	
 	public void run() {
-		Player p = playerList.get(0);
+//		Player p = playerList.get(0);
 		
 		//4. 10번 frame돌면서 기록하기 및 결과 출력하기
-		for(int i = 0; i < MAX_ROUND; i++) {
-			pins.setPins();
-			
-			int firstShot = pins.rolling();
-			int secondShot = firstShot == 10 ? 0 : pins.rolling();
-			
-			ArrayList<Frame> playerFrameList = p.getFrameList();
-			playerFrameList.get(i).addPinCount(firstShot);
-			playerFrameList.get(i).addPinCount(secondShot);
-			
-			if (i == MAX_ROUND - 1 && pins.getPins() == 0) {
-				pins.setPins();
-				int lastShot = pins.rolling();
-				playerFrameList.get(i).addPinCount(lastShot);
-			}
-			
-			String result = report.getScoreReport(playerList);
-			System.out.println(result);
-		}
+//		for(int i = 0; i < MAX_ROUND; i++) {
+//			pins.setPins();
+//			
+//			int firstShot = pins.rolling();
+//			int secondShot = firstShot == 10 ? 0 : pins.rolling();
+//			
+//			ArrayList<Frame> playerFrameList = p.getFrameList();
+//			playerFrameList.get(i).addPinCount(firstShot);
+//			playerFrameList.get(i).addPinCount(secondShot);
+//			
+//			if (i == MAX_ROUND - 1 && pins.getPins() == 0) {
+//				pins.setPins();
+//				int lastShot = pins.rolling();
+//				playerFrameList.get(i).addPinCount(lastShot);
+//			}
+//			
+//			String result = report.getScoreReport(playerList);
+//			System.out.println(result);
+//		}
 		//5. 10번 돌 때, score 계산하고 출력하기
 		//6. player 수 늘려서 출력하기
 	}

@@ -8,6 +8,7 @@ public class Frame {
 	private String type; //1~9회차의 프레임 or 10회차 프레임
 	private ArrayList<Integer> pinCountList = new ArrayList<>(); // 쓰러뜨린 pin 갯수
 	
+	
 	public Frame(int round, String type) {
 		this.round = round;
 		this.type = type;

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class GameScoreReport {
 	private StringBuffer buffer = new StringBuffer();
 	private final static String HEAD = "Bowling Game \t\t\n";
-	private final static String HEAD_INTRODUCE = "   User  ||  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10  |\n";
 	private final static String LINE = "-----------------------------------------------------------------------\n";
 	private final static String LINE_DOUBLE = "=======================================================================\n";
 	
@@ -29,8 +28,6 @@ public class GameScoreReport {
 	private void makeHeader(){
 		// buffer.append("");
 		buffer.append(HEAD);
-		buffer.append(LINE);
-		buffer.append(HEAD_INTRODUCE);
 		buffer.append(LINE_DOUBLE);
 	} 
 	
@@ -38,19 +35,12 @@ public class GameScoreReport {
     	ArrayList<Frame> playerFrameList = p.getFrameList();
     	
     	//UserName
-    	buffer.append(" " + p.getName());
-    	buffer.append(" || ");
+    	buffer.append(p.getName() + '\n');
+    	buffer.append("프레임:\\t1\\t2\\t3\\t4\\t5\\t6\\t7\\t8\\t9\\t10");
+    	buffer.append("투구:\t");
     	
     	//Frame Score
-    	for(int i = 0; i < 10; i++) {
-    		ArrayList<Integer> pinCountList = playerFrameList.get(i).getPinCountList();
-    		for(int j = 0; j < pinCountList.size(); j++) {
-    			buffer.append(pinCountList.get(j));
-    			if (j < pinCountList.size() - 1) buffer.append(' ');
-    		}
-    		buffer.append(" | ");
-    	}
-		buffer.append("\n");
+    	
 		buffer.append(LINE);
 	}
 	
