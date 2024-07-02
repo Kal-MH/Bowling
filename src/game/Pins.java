@@ -19,9 +19,11 @@ public class Pins {
 		this.pins = MAX_BOWLING_PIN_NUM;
 	}
 	
-	public void rolling() {
-		int randomValue = (int)(Math.random() * MAX_BOWLING_PIN_NUM + 1); // 1 ~ 10 사이의 숫자 생성
+	public int rolling() {
+		int randomValue = (int)(Math.random() * pins + 1); // 1 ~ 10 사이의 숫자 생성
 		pins -= randomValue;
+		
+		return randomValue;
 	}
 	
 	public int getPins() {

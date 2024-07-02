@@ -2,8 +2,6 @@ package game;
 
 import java.util.ArrayList;
 
-// TODO : frame 기록하기
-
 public class Frame {
 	private int round; //회차
 	private int maxPinCount;

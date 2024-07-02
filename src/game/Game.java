@@ -10,43 +10,46 @@ import java.util.ArrayList;
  * */
 public class Game {
 	static final int MAX_ROUND = 10;
+	int playerNum;
 	ArrayList<Player> playerList;
-	int round;
+	Pins pins = new Pins();
+	GameScoreReport report = new GameScoreReport();
 	
-	public Game() {
+	public Game(int playerNum) {
+		this.playerNum = playerNum;
 		playerList = new ArrayList<>();
-		round = 1;
+		setGame();
 	}
 	
-	public void run(int playerNum) {
-		//1. player 생성
-//		for(int i = 0; i < playerNum; i++) {
-//			playerList.add(new Player("Player" + i));
-//		}
-		Player p = new Player("Player1");
-		
-		//2. Pin random 생성해서 출력해보기
-		Pins pins = new Pins();
-		pins.rolling();
-		
-		int firstShot = pins.getPins();
-		
-		pins.setPins();
-		pins.rolling();
-
-		int secondShot = pins.getPins();
-		
-		//3. 첫번째 frame에 쓰러뜨린 pin 기록하기
-		ArrayList<Frame> playerFrameList = p.getFrameList();
-		playerFrameList.get(round).addPinCount(firstShot);
-		playerFrameList.get(round).addPinCount(secondShot);
-		
-		ArrayList<Integer> pinCountList = playerFrameList.get(round).getPinCountList();
-		for(int count: pinCountList) {
-			System.out.println(count);
+	private void setGame() {
+		for(int i = 0; i < playerNum; i++) {
+			playerList.add(new Player("Player" + (i + 1)));
 		}
+	}
+	
+	public void run() {
+		Player p = playerList.get(0);
 		
 		//4. 10번 frame돌면서 기록하기 및 결과 출력하기
+		for(int i = 0; i < MAX_ROUND; i++) {
+			pins.setPins();
+			
+			int firstShot = pins.rolling();
+			int secondShot = firstShot == 10 ? 0 : pins.rolling();
+			
+			ArrayList<Frame> playerFrameList = p.getFrameList();
+			playerFrameList.get(i).addPinCount(firstShot);
+			playerFrameList.get(i).addPinCount(secondShot);
+			
+			if (i == MAX_ROUND - 1 && pins.getPins() == 0) {
+				pins.setPins();
+				int lastShot = pins.rolling();
+				playerFrameList.get(i).addPinCount(lastShot);
+			}
+			
+			String result = report.getScoreReport(playerList);
+			System.out.println(result);
+		}
 		//5. 10번 돌 때, score 계산하고 출력하기
 		//6. player 수 늘려서 출력하기
 	}

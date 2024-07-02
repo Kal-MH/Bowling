@@ -2,11 +2,6 @@ package game;
 
 import java.util.ArrayList;
 
-/*
- * TODO
- * 1. FrameList 생성하기
- *   - 마지막에 FINAL로 지정하기
- **/
 public class Player {
 	private static final int MAX_FRAME_COUNT = 10;
 	private String name;
@@ -29,5 +24,9 @@ public class Player {
 	
 	public ArrayList<Frame> getFrameList() {
 		return frameList;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }
