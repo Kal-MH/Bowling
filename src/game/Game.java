@@ -1,56 +1,93 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
-/*
- * TODO
- * 1. Pin 쓰러뜨리기
- * 2. Player의 frameList 불러와서 해당 회차 프레임에서 1차, 2차(혹은 3차) 기록
- * 3. 점수 계산해서 출력하기 
- * */
 public class Game {
 	static final int MAX_ROUND = 10;
-	int playerNum;
-	ArrayList<Player> playerList;
-	Pins pins = new Pins();
-	GameScoreReport report = new GameScoreReport();
+	private int playerNum;
+	private int curPlayerIdx;
+	private int curRound;
+	private ArrayList<Player> playerList;
+	private boolean isFinished;
+	private Scanner scanner;
 	
 	public Game(int playerNum) {
 		this.playerNum = playerNum;
+		curPlayerIdx = 0;
+		curRound = 1;
+		isFinished = false;
 		playerList = new ArrayList<>();
-		setGame();
-	}
-	
-	private void setGame() {
 		for(int i = 0; i < playerNum; i++) {
 			playerList.add(new Player("Player" + (i + 1)));
 		}
+		
+		scanner = new Scanner(System.in);
 	}
 	
 	public void run() {
-//		Player p = playerList.get(0);
+		Scanner scanner = new Scanner(System.in);
 		
-		//4. 10번 frame돌면서 기록하기 및 결과 출력하기
-//		for(int i = 0; i < MAX_ROUND; i++) {
-//			pins.setPins();
-//			
-//			int firstShot = pins.rolling();
-//			int secondShot = firstShot == 10 ? 0 : pins.rolling();
-//			
-//			ArrayList<Frame> playerFrameList = p.getFrameList();
-//			playerFrameList.get(i).addPinCount(firstShot);
-//			playerFrameList.get(i).addPinCount(secondShot);
-//			
-//			if (i == MAX_ROUND - 1 && pins.getPins() == 0) {
-//				pins.setPins();
-//				int lastShot = pins.rolling();
-//				playerFrameList.get(i).addPinCount(lastShot);
-//			}
-//			
-//			String result = report.getScoreReport(playerList);
-//			System.out.println(result);
-//		}
-		//5. 10번 돌 때, score 계산하고 출력하기
-		//6. player 수 늘려서 출력하기
+		while (!isFinished) {
+			startRound();
+			
+			curPlayerIdx = (curPlayerIdx + 1) % playerList.size();
+			if (curPlayerIdx == 0) {
+				printResult();
+				curRound++;
+				isFinished = curRound > MAX_ROUND;
+			}
+		}
+
+		scanner.close();
+	}
+	
+	private void printResult() {
+		System.out.println();
+		String report = GameScoreReport.getScoreReport(playerList);
+		System.out.println(report);
+	}
+	
+	private void startRound() {
+		Player curPlayer = playerList.get(curPlayerIdx);
+		Frame curFrame = curPlayer.getFrameList().get(curRound - 1);
+		
+		if (curPlayerIdx == 0) System.out.println("프레임 " + curRound + " 경기를 시작합니다.");
+		System.out.println("[" + curPlayer.getName() + "]");
+		
+		if (!curFrame.isCompleted()) {
+			playFrame(curFrame);
+		}
+	}
+	
+	private void playFrame(Frame frame) {
+		int firstShot = getValidShot("첫번째 투구 : ",  0, 10);
+		frame.setPinCount(firstShot);
+		
+		if (!frame.isStrike() || (curRound == 10 && frame.isStrike())) {
+			int remainingPins = curRound != 10 ? 10 - firstShot : 10;
+	        int secondShot = getValidShot("두번째 투구 : ", 0, remainingPins);
+	        frame.setPinCount(secondShot);
+		}
+        
+        if (curRound == 10 && (frame.isSpare() || frame.isStrike())) {
+           int thirdShot = getValidShot("보너스 투구 : ", 0, 10);
+           frame.setPinCount(thirdShot);
+        }
+	}
+	
+	private int getValidShot(String prompt, int min, int max) {
+		int shot; 
+		
+		while (true) {
+             System.out.print(prompt);
+             shot = scanner.nextInt();
+             if (shot >= min && shot <= max) {
+                 return shot;
+             } else {
+                 System.out.println("잘못된 입력입니다. "+min+"에서 "+ max+" 사이의 값을 입력하세요.");
+                 
+             }
+         }
 	}
 }

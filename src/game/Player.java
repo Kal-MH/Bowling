@@ -5,20 +5,13 @@ import java.util.ArrayList;
 public class Player {
 	private static final int MAX_FRAME_COUNT = 10;
 	private String name;
-	private ArrayList<Frame> frameList = new ArrayList<>();
+	private ArrayList<Frame> frameList;
 	
 	public Player(String name) {
 		this.name = name;
-		setFrameList();
-	}
-	
-	private void setFrameList() {
+		frameList = new ArrayList<>();
 		for(int i = 1; i <= MAX_FRAME_COUNT; i++) {
-			if (i == MAX_FRAME_COUNT) {
-				frameList.add(new Frame(i, "FINAL"));
-				break;
-			}
-			frameList.add(new Frame(i, "BASIC"));
+			frameList.add(new Frame(i));
 		}
 	}
 	

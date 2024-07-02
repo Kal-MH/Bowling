@@ -4,51 +4,80 @@ import java.util.ArrayList;
 
 public class Frame {
 	private int round; //회차
-	private int maxPinCount;
-	private String type; //1~9회차의 프레임 or 10회차 프레임
-	private ArrayList<Integer> pinCountList = new ArrayList<>(); // 쓰러뜨린 pin 갯수
+	private int firstShot;
+	private int secondShot;
+	private int thirdShot;
+	private int[] shots;
+	private boolean isStrike;
+	private boolean isSpare;
+	private boolean isCompleted;
+	private int currentShot;
 	
 	
-	public Frame(int round, String type) {
+	public Frame(int round) {
 		this.round = round;
-		this.type = type;
-		setMaxPinCount();
+		
+		firstShot = -1;
+		secondShot = -1;
+		thirdShot = -1;
+		isStrike = false;
+		isSpare = false;
+		isCompleted = false;
 	}
 	
-	private void setMaxPinCount() {
-		switch (this.type) {
-			case "BASIC" : 
-				maxPinCount = 2;
-				break;
-			case "FINAL" : 
-				maxPinCount = 3;
-				break;
-			default:
-				throw new IllegalArgumentException("Error: Frame type, Basic or Final만 넣어주세요.");
-		}
-	}
 	
-	public void addPinCount(int count) {
-		if (pinCountList.size() >= maxPinCount) {
-			throw new IllegalArgumentException("더 이상 던질 수 없습니다.");
+	public void setPinCount(int pins) {
+		if (firstShot == -1) {
+			firstShot = pins;
+			if (firstShot == 10) {
+				isStrike = true;
+				isCompleted = true;
+			}
+		} else if (secondShot == -1) {
+			secondShot = pins;
+			
+			if (firstShot + secondShot == 10) {
+				isSpare = true;
+			}
+			
+			isCompleted = true;
+		} else if (round == 10 && thirdShot == -1) {
+			thirdShot = pins;
+			isCompleted = true;
 		}
-		pinCountList.add(count);
 	}
 
 	public int getRound() {
 		return round;
 	}
 
-	public int getMaxPinCount() {
-		return maxPinCount;
+
+	public int getFirstShot() {
+		return firstShot;
 	}
 
-	public String getType() {
-		return type;
+
+	public int getSecondShot() {
+		return secondShot;
 	}
 
-	public ArrayList<Integer> getPinCountList() {
-		return pinCountList;
+
+	public int getThirdShot() {
+		return thirdShot;
 	}
-	
+
+
+	public boolean isStrike() {
+		return isStrike;
+	}
+
+
+	public boolean isSpare() {
+		return isSpare;
+	}
+
+
+	public boolean isCompleted() {
+		return isCompleted;
+	}
 }
