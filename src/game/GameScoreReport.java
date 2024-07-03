@@ -3,6 +3,7 @@ package game;
 import java.util.List;
 
 import score.ScoreEvaluation;
+import utils.BowlingConstants;
 
 public class GameScoreReport {
 	private static StringBuffer buffer;
@@ -79,6 +80,7 @@ public class GameScoreReport {
     		boolean isAllCleared = frame.isSpare() || frame.isStrike();
     		boolean isNextFrameNotCompleted = (i + 1) < playerFrameList.size() && !playerFrameList.get(i + 1).isCompleted();
     		
+    		
       		if (!frame.isCompleted()) break;
       		if (isAllCleared && isNextFrameNotCompleted) break;
       		
@@ -86,10 +88,28 @@ public class GameScoreReport {
     		buffer.append(sum + "\t");
     	}
     	buffer.append("\n");
-		buffer.append("총점:\t" + sum + "\n");
+    	
+		buffer.append("총점:\t");
+		Frame firstFrame = playerFrameList.get(0);
+    	Frame secondFrame = playerFrameList.get(1);
+    	boolean isShowTotalSum = !(firstFrame.isSpare() || firstFrame.isStrike()) || secondFrame.isCompleted();
+		if (isShowTotalSum) buffer.append(sum);
+		buffer.append("\n");
     }
 	
 	private void makeFooter(){
 		buffer.append(LINE_DOUBLE);
+	}
+	
+	public String getTotalReport(List<Player> playerList) {
+		initializeBuffer();
+		
+		buffer.append("최종 결과\n");
+		for(Player p : playerList) {
+			int total = evaluation.getTotalScore(p.getFrameList());
+			buffer.append(p.getName() + " : " + total + "\n");
+		}
+		
+		return buffer.toString();
 	}
 }

@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import utils.BowlingConstants;
@@ -44,6 +45,8 @@ public class Game {
 			}
 		}
 
+		String result = report.getTotalReport(playerList);
+		System.out.println(result);
 		scanner.close();
 	}
 	
@@ -79,14 +82,19 @@ public class Game {
 		int shot; 
 		
 		while (true) {
-             System.out.print(prompt);
-             shot = scanner.nextInt();
-             if (shot >= min && shot <= max) {
-                 return shot;
-             } else {
-                 System.out.println("잘못된 입력입니다. "+min+"에서 "+ max+" 사이의 값을 입력하세요.");
-                 
-             }
+			try {
+				System.out.print(prompt);
+	             shot = scanner.nextInt();
+	             if (shot >= min && shot <= max) {
+	                 return shot;
+	             } else {
+	                 System.out.println("잘못된 입력입니다. "+min+"에서 "+ max+" 사이의 값을 입력하세요.");
+	                 
+	             }
+			} catch(InputMismatchException e) {
+				 System.out.println("잘못된 입력입니다. 정수를 입력해주세요.");
+				 scanner = new Scanner(System.in);
+			}
          }
 	}
 	

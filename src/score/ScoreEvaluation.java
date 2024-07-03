@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import game.Frame;
+import utils.BowlingConstants;
 
 public class ScoreEvaluation implements BowlingScoreEvaluation {
 	@Override
@@ -63,5 +64,15 @@ public class ScoreEvaluation implements BowlingScoreEvaluation {
 		}
 		
 		return score;
+	}
+	
+	public int getTotalScore(List<Frame> frameList) {
+		int total = 0;
+		
+		for(int i = 0; i < frameList.size(); i++) {
+			total += getScore(frameList, i);
+		}
+		
+		return total;
 	}
 }
