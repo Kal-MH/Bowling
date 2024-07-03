@@ -3,7 +3,6 @@ package game;
 import java.util.List;
 
 import score.ScoreEvaluation;
-import utils.BowlingConstants;
 
 public class GameScoreReport {
 	private static StringBuffer buffer;

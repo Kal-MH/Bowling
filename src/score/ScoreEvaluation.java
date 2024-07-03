@@ -4,7 +4,6 @@ import java.util.List;
 
 
 import game.Frame;
-import utils.BowlingConstants;
 
 public class ScoreEvaluation implements BowlingScoreEvaluation {
 	@Override
