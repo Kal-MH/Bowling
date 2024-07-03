@@ -3,14 +3,17 @@ package game;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import utils.BowlingConstants;
+
 public class Game {
-	static final int MAX_ROUND = 10;
 	private int playerNum;
 	private int curPlayerIdx;
 	private int curRound;
 	private ArrayList<Player> playerList;
 	private boolean isFinished;
 	private Scanner scanner;
+	private GameScoreReport report;
+	
 	
 	public Game(int playerNum) {
 		this.playerNum = playerNum;
@@ -18,15 +21,17 @@ public class Game {
 		curRound = 1;
 		isFinished = false;
 		playerList = new ArrayList<>();
-		for(int i = 0; i < playerNum; i++) {
+		for(int i = 0; i < this.playerNum; i++) {
 			playerList.add(new Player("Player" + (i + 1)));
 		}
 		
 		scanner = new Scanner(System.in);
+		report = new GameScoreReport();
 	}
 	
 	public void run() {
 		Scanner scanner = new Scanner(System.in);
+		System.out.println("Bowling Game");
 		
 		while (!isFinished) {
 			startRound();
@@ -35,17 +40,11 @@ public class Game {
 			if (curPlayerIdx == 0) {
 				printResult();
 				curRound++;
-				isFinished = curRound > MAX_ROUND;
+				isFinished = curRound > BowlingConstants.MAX_FRAME_ROUND;
 			}
 		}
 
 		scanner.close();
-	}
-	
-	private void printResult() {
-		System.out.println();
-		String report = GameScoreReport.getScoreReport(playerList);
-		System.out.println(report);
 	}
 	
 	private void startRound() {
@@ -89,5 +88,11 @@ public class Game {
                  
              }
          }
+	}
+	
+	private void printResult() {
+		System.out.println();
+		String reportStr = report.getScoreReport(playerList);
+		System.out.println(reportStr);
 	}
 }

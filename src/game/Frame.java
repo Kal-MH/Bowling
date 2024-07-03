@@ -1,17 +1,13 @@
 package game;
 
-import java.util.ArrayList;
-
 public class Frame {
-	private int round; //회차
+	private int round;
 	private int firstShot;
 	private int secondShot;
 	private int thirdShot;
-	private int[] shots;
 	private boolean isStrike;
 	private boolean isSpare;
 	private boolean isCompleted;
-	private int currentShot;
 	
 	
 	public Frame(int round) {
@@ -53,17 +49,17 @@ public class Frame {
 
 
 	public int getFirstShot() {
-		return firstShot;
+		return firstShot == -1 ? 0 : firstShot;
 	}
 
 
 	public int getSecondShot() {
-		return secondShot;
+		return secondShot == -1 ? 0 : secondShot;
 	}
 
 
 	public int getThirdShot() {
-		return thirdShot;
+		return thirdShot == -1 ? 0 : thirdShot;
 	}
 
 

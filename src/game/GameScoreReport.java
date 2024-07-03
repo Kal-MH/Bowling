@@ -1,21 +1,16 @@
 package game;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import score.ScoreEvaluation;
 
-/*
- * TODO
- * 1. header, body, footer로 출력포맷 정의하기
- * 2. ScoreEvaluation을 통해서 각 플레이어 순회하며 점수 계산 및 출력하기 
- * */
 public class GameScoreReport {
 	private static StringBuffer buffer;
-	private final static String HEAD = "Bowling Game \t\t\n";
 	private final static String LINE = "----------------------------------------------------------------------------------\n";
 	private final static String LINE_DOUBLE = "==================================================================================\n";
+	private ScoreEvaluation evaluation = new ScoreEvaluation();
 	
-	public static String getScoreReport(ArrayList<Player> playerList) {
+	public String getScoreReport(List<Player> playerList) {
 		initializeBuffer();
 		makeHeader();
 		for(int i = 0; i < playerList.size(); i++) {
@@ -28,25 +23,29 @@ public class GameScoreReport {
 		return buffer.toString();
 	}
 	
-	private static void initializeBuffer() {
+	private void initializeBuffer() {
 		buffer = new StringBuffer();
 	}
 
-	private static void makeHeader(){
+	private void makeHeader(){
 		buffer.append(LINE_DOUBLE);
 		buffer.append("점수판\n");
 		buffer.append(LINE_DOUBLE);
 	} 
 	
-    private static void makeBody(Player p){
-    	ArrayList<Frame> playerFrameList = p.getFrameList();
+    private void makeBody(Player p){
+    	List<Frame> playerFrameList = p.getFrameList();
     	
     	//UserName
     	buffer.append(p.getName() + '\n');
     	buffer.append("프레임:\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\n");
     	
+    	makeBodyFrameScore(playerFrameList);
+    	makeBodyScore(playerFrameList);
+	}
+    
+    private void makeBodyFrameScore(List<Frame> playerFrameList) {
     	buffer.append("투구:\t");
-    	//Frame Score
     	for(Frame frame: playerFrameList) {
     		if (!frame.isCompleted()) break;
     		if (frame.isStrike()) {
@@ -70,7 +69,9 @@ public class GameScoreReport {
     		buffer.append("\t");
     	}
     	buffer.append("\n");
-    	
+    }
+    
+    private void makeBodyScore(List<Frame> playerFrameList) {
     	buffer.append("점수:\t");
     	int sum = 0;
     	for(int i = 0; i < playerFrameList.size(); i++) {
@@ -81,15 +82,14 @@ public class GameScoreReport {
       		if (!frame.isCompleted()) break;
       		if (isAllCleared && isNextFrameNotCompleted) break;
       		
-    		sum += ScoreEvaluation.getScore(playerFrameList, i);
+    		sum += evaluation.getScore(playerFrameList, i);
     		buffer.append(sum + "\t");
     	}
     	buffer.append("\n");
-    	 
 		buffer.append("총점:\t" + sum + "\n");
-	}
+    }
 	
-	private static void makeFooter(){
+	private void makeFooter(){
 		buffer.append(LINE_DOUBLE);
 	}
 }
